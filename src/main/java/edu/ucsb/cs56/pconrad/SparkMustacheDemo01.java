@@ -24,15 +24,34 @@ public class SparkMustacheDemo01 {
 	
 	public static final Logger log = Logger.getLogger(CLASSNAME);
 
+
+	public static class Interest {
+		private String interest;
+		public Interest (String interest) {
+			this.interest=interest;
+		}
+		public String getInterest() { return this.interest;}
+	}
+	
 	public static void main(String[] args) {
 
         port(getHerokuAssignedPort());
 		
-		Map map = new HashMap();
+		Map<String,Object> map = new HashMap<String,Object>();
         map.put("name", "Sam");
+
+		java.util.ArrayList<Interest> interests = new java.util.ArrayList<Interest>();
+
+		interests.add(new Interest("Weather"));
+		interests.add(new Interest("Food"));
+		interests.add(new Interest("Location"));
+		interests.add(new Interest("Traffic"));
+
+		map.put("interests",interests);
 		
         // hello.mustache file is in resources/templates directory
-        get("/", (rq, rs) -> new ModelAndView(map, "hello.mustache"), new MustacheTemplateEngine());
+        get("/", (rq, rs) -> new ModelAndView(map, "hello.mustache"),
+			new MustacheTemplateEngine());
 		
 	}
 	
